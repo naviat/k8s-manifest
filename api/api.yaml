@@ -42,7 +42,6 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-apiVersion: v1
       app: vision-api-service
   template:
     metadata:

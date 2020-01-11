@@ -27,7 +27,6 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-apiVersion: v1
       app: base-gateway
   template:
     metadata:
