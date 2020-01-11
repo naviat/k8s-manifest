@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: base-api-service
+  labels:
+    app: base-api
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 3000      # push by ConfigMap
+      targetPort: 3000
+      protocol: TCP
+  externalTrafficPolicy: Local
+  selector:
+    app: base-api
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: base-api
+spec:
+  serviceName: base-api-service
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+apiVersion: v1
+      app: base-api
+  template:
+    metadata:
+      labels:
+        app: base-api
+    spec:
+      containers:
+      - name: base-api
+        image: gcr.io/base-gcs-test/vision-api:v1
+        ports:
+        - containerPort: 3000
+          name: api

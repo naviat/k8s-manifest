@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: base-gateway-service
+  labels:
+    app: base-gateway
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 5001      # push by ConfigMap
+      targetPort: 5001
+      protocol: TCP
+  externalTrafficPolicy: Local
+  selector:
+    app: base-gateway
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: base-gateway
+spec:
+  serviceName: base-gateway-service
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+apiVersion: v1
+      app: base-gateway
+  template:
+    metadata:
+      labels:
+        app: base-gateway
+    spec:
+      containers:
+      - name: base-gateway
+        image: gcr.io/base-gcs-test/gateway:v1
+        ports:
+        - containerPort: 5001
+          name: gateway
