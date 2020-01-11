@@ -19,6 +19,8 @@ spec:
   selector:
     app: vision-nginx
 
+---
+
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:

@@ -1,9 +1,24 @@
 apiVersion: v1
+kind: Pod
+metadata:
+  name: my-gpu-pod
+spec:
+  containers:
+  - name: vision-api-service
+    image: gcr.io/base-gcs-test/vision-api:v1
+    command: ["/bin/bash", "-c","tail -f /dev/null"]
+    resources:
+      limits:
+       nvidia.com/gpu: 1
+
+---
+
+apiVersion: v1
 kind: Service
 metadata:
-  name: base-api-service
+  name: vision-api-service
   labels:
-    app: base-api
+    app: vision-api-service
 spec:
   type: LoadBalancer
   ports:
@@ -12,28 +27,30 @@ spec:
       protocol: TCP
   externalTrafficPolicy: Local
   selector:
-    app: base-api
+    app: vision-api-service
+
+---
 
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: base-api
+  name: vision-api-service
 spec:
-  serviceName: base-api-service
+  serviceName: vision-api-service
   replicas: 1
   updateStrategy:
     type: RollingUpdate
   selector:
     matchLabels:
 apiVersion: v1
-      app: base-api
+      app: vision-api-service
   template:
     metadata:
       labels:
-        app: base-api
+        app: vision-api-service
     spec:
       containers:
-      - name: base-api
+      - name: vision-api-service
         image: gcr.io/base-gcs-test/vision-api:v1
         ports:
         - containerPort: 3000
