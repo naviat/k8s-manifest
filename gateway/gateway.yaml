@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: base-gateway-service
+  name: vision-gateway-service
   labels:
-    app: base-gateway
+    app: vision-gateway
 spec:
   type: LoadBalancer
   ports:
@@ -12,29 +12,29 @@ spec:
       protocol: TCP
   externalTrafficPolicy: Local
   selector:
-    app: base-gateway
+    app: vision-gateway
 
 ---
 
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: base-gateway
+  name: vision-gateway
 spec:
-  serviceName: base-gateway-service
+  serviceName: vision-gateway-service
   replicas: 1
   updateStrategy:
     type: RollingUpdate
   selector:
     matchLabels:
-      app: base-gateway
+      app: vision-gateway
   template:
     metadata:
       labels:
-        app: base-gateway
+        app: vision-gateway
     spec:
       containers:
-      - name: base-gateway
+      - name: vision-gateway
         image: gcr.io/base-gcs-test/gateway:v1
         ports:
         - containerPort: 5001
