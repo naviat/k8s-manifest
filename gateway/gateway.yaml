@@ -35,7 +35,7 @@ spec:
     spec:
       containers:
       - name: vision-gateway
-        image: gcr.io/base-gcs-test/gateway:v1
+        image: gcr.io/base-gcs-test/gateway:v2
         ports:
         - containerPort: 8000
           name: gateway
