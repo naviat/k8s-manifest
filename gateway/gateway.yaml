@@ -8,7 +8,7 @@ spec:
   type: LoadBalancer
   ports:
     - port: 5001      # push by ConfigMap
-      targetPort: 5001
+      targetPort: 8000
       protocol: TCP
   externalTrafficPolicy: Local
   selector:
@@ -37,5 +37,5 @@ spec:
       - name: vision-gateway
         image: gcr.io/base-gcs-test/gateway:v1
         ports:
-        - containerPort: 5001
+        - containerPort: 8000
           name: gateway
