@@ -8,11 +8,10 @@ spec:
   type: LoadBalancer
   ports:
     - port: 3000      # push by ConfigMap
-      targetPort: 5001
+      targetPort: 3000
       protocol: TCP
-  externalTrafficPolicy: Local
   selector:
-    app: vision-api-service
+    app: vision-api-deployment
 
 ---
 
@@ -32,9 +31,9 @@ spec:
     spec:
       containers:
       - name: vision-api
-        image: gcr.io/base-gcs-test/vision-api:v1
+        image: gcr.io/base-gcs-test/vision-api:v5
         ports:
-        - containerPort: 5001
+        - containerPort: 3000
           name: api
         resources:
           limits:
